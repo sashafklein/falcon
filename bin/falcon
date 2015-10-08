@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+require "falcon"
+
+input = ARGV
+
+if input.empty?
+  puts "Please give a command or type `falcon help` for more info."
+elsif input.length > 0 && input.length < 3
+  
+  instruction = input.length == 2 ? input.first : input.last
+  environment = input.length == 2 ? input.last : :production
+  
+  Falcon::Deploy.new(environment).run(instruction)
+else
+  puts "No more than two commands accepted"
+end

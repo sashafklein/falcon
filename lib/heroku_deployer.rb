@@ -1,6 +1,9 @@
 class HerokuDeployer
-  def initialize(app_env)
-    @app = ENV["#{app_env.to_s.upcase}_APP"]
+
+  attr_reader :app
+  def initialize(app)
+    @app = app
+    raise "No app flag configured!" unless @app
   end
  
   def migrations

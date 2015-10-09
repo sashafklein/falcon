@@ -7,7 +7,6 @@ class HerokuDeployer
   end
  
   def migrations
-    return
     push; turn_app_off; migrate; restart; turn_app_on; tag;
   end
  

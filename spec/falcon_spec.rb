@@ -33,22 +33,65 @@ describe Falcon do
       end
     end
 
-    describe "command line functionality" do
-      it "defaults takes an explicit app" do
-        expect_any_instance_of( HerokuDeployer ).to receive(:initialize).with('my-explicit-app', nil).and_call_original
+    describe "basic functionality" do
+
+      before do 
+        Falcon.configure do |c| 
+          c.staging_app = 'staging-name'
+          c.production_app = 'prod-name'
+          c.explicit_app = 'explicit-name'
+        end
+      end
+
+      it "calls the right deployer functions with the right environment" do
+        expect_any_instance_of( HerokuDeployer ).to receive(:initialize).with('staging-name').and_call_original
         expect_any_instance_of( HerokuDeployer ).to receive(:migrations).and_return(nil)
-        `falcon migrations -n my-explicit-app`
+
+        Falcon::Deploy.new(:staging).migrations
       end
 
-      it "asks for approval before calling rollback" do
+      it "runs rollback if approved" do
+        expect_any_instance_of( HerokuDeployer ).to receive(:initialize).with('prod-name').and_call_original
+        expect_any_instance_of( HerokuDeployer ).to receive(:rollback)
+        expect( STDIN ).to receive(:gets).and_return('y')
+
+        Falcon::Deploy.new(:production).rollback      
+      end
+
+      it "blocks rollback unless approved" do
+        expect_any_instance_of( HerokuDeployer ).not_to receive(:initialize)
         expect_any_instance_of( HerokuDeployer ).not_to receive(:rollback)
-        `falcon rollback -n my-explicit-app`
+        expect( STDIN ).to receive(:gets).and_return('n')
+
+        Falcon::Deploy.new(:staging).rollback
       end
 
-      it "can take a force argument to override rollback warning" do
-        expect_any_instance_of( HerokuDeployer ).to receive(:rollback).and_return(nil)
-        `falcon rollback -n my-explicit-app -f`
+      it "allows for a force argument to circumvent STDIN warning" do
+        expect_any_instance_of( HerokuDeployer ).to receive(:initialize).with('explicit-name').and_call_original
+        expect_any_instance_of( HerokuDeployer ).to receive(:rollback)
+
+        Falcon::Deploy.new(:explicit, true).rollback
       end
+    end
+
+    describe "command line functionality" do
+      # TODO: The expectations just aren't setting.
+
+      # it "can take an explicit app flag" do
+      #   expect_any_instance_of( HerokuDeployer ).to receive(:initialize).with('my-explicit-app', nil).and_call_original
+      #   expect_any_instance_of( HerokuDeployer ).to receive(:migrations).and_return(nil)
+      #   `falcon migrations -n my-explicit-app`
+      # end
+
+      # it "asks for approval before calling rollback" do
+      #   expect_any_instance_of( Falcon::Deploy ).to receive(:initialize).with(:explicit, nil).and_return( nil )
+      #   `falcon rollback -n my-explicit-app`
+      # end
+
+      # it "can take a force argument to override rollback warning" do
+      #   expect_any_instance_of( Falcon::Deploy ).to receive(:initialize).with(:explicit, true).and_return( nil )
+      #   `falcon rollback -n my-explicit-app -f`
+      # end
     end
   end
 end

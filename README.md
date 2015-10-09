@@ -6,7 +6,7 @@ A simple wrapper to make it easier and less nerve-wracking to deploy to Heroku a
 
 Inspired by Space X's awesome Falcon rocket, which is working towards the first combined take-off and safe landing, and drawn from [this gist](https://gist.github.com/guapolo/28729b95a7ef6b1aacf5).
 
-Falcon aims to be a simple, paired-down, easy-to-use (and easy-to-maintain) solution to a very specific problem.
+Falcon aims to be a simple, pared-down, easy-to-use (and easy-to-maintain) solution to a very specific problem.
 
 ## Installation
 

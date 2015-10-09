@@ -49,8 +49,8 @@ falcon migrations production
 falcon deploy
 # => Defaults to production app
 
-falcon migrations -n an-explicitly-passed-app-name
-# => You can pass an explicit name whether or not you've configured defaults
+falcon rollback -n an-explicitly-passed-app-name
+# => You can pass an explicit app name whether or not you've configured defaults
 
 falcon help
 # => ?

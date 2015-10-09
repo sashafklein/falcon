@@ -1,17 +1,31 @@
 #!/usr/bin/env ruby
 
 require "falcon"
+require 'optparse'
 
 input = ARGV
 
+OptionParser.new do |opts|
+  opts.on("-n", "--name [NAME]", String, "Run command for Heroku app named [NAME]") do |v|
+    Falcon.configure{ |c| c.explicit_app = v }
+  end
+  opts.on("-f", "--force", "Skip warnings") do |v|
+    Falcon.configure{ |c| c.force = true }
+  end
+end.parse!
+
 if input.empty?
   puts "Please give a command or type `falcon help` for more info."
-elsif input.length > 0 && input.length < 3
-  
-  instruction = input.length == 2 ? input.first : input.last
-  environment = input.length == 2 ? input.last : :production
-  
-  Falcon::Deploy.new(environment).run(instruction)
+elsif input.length > 2
+  puts "No more than two commands (plus flags) accepted. Type `falcon help` for more info."
 else
-  puts "No more than two commands accepted"
+
+  command, environment = input[0], input[1] || :production
+
+  if Falcon.configuration.explicit_app
+    raise "Too many arguments given -n flag. Type `falcon help` for more info." if input.length == 2
+    environment = :explicit
+  end
+
+  Falcon::Deploy.new( environment, Falcon.configuration.force ).run( command )
 end

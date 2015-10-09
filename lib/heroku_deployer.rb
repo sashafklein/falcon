@@ -7,6 +7,7 @@ class HerokuDeployer
   end
  
   def migrations
+    return
     push; turn_app_off; migrate; restart; turn_app_on; tag;
   end
  
@@ -93,10 +94,12 @@ class HerokuDeployer
 
   private
 
-  def run_and_log(command, instance = 1)
+  def run_and_log(command, instance = 1, cap=20)
     response = command
+    return (puts "Gave up after #{cap} seconds.") if instance >= cap
+    
     if response.include?("Heroku Toolbelt is currently updating")
-      puts "Stalling to allow for Heroku Toolbelt update. Try \##{instance}..."
+      puts "Stalling to allow for Heroku Toolbelt update. Attempt \##{instance}..."
       sleep 1
       run_and_log(command, instance + 1)
     else

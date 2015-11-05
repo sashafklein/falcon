@@ -1,4 +1,4 @@
-# Falcon
+# Falcon Deploy
 
 A simple wrapper to make it easier and less nerve-wracking to deploy to Heroku and roll code back when you mess things up. 
 
@@ -15,7 +15,7 @@ Falcon aims to be a simple, pared-down, easy-to-use (and easy-to-maintain) solut
 Add to your Gemfile (`:development` group is fine):
 
 ```ruby
-gem 'falcon'
+gem 'falcon-deploy'
 ```
 
 And then execute:

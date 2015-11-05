@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'falcon/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "falcon"
+  spec.name          = "falcon-deploy"
   spec.version       = Falcon::VERSION
   spec.authors       = ["Sasha Klein"]
   spec.email         = ["sashafklein@gmail.com"]

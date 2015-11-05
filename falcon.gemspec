@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["sashafklein@gmail.com"]
 
   spec.summary       = %q{A Heroku wrapper to simplify and de-risk app deployment, migrations, and rollbacks.}
-  spec.homepage      = "http://www.sashafklein.com/portfolio#falcon"
+  spec.homepage      = "https://www.github.com/sashafklein/falcon"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }

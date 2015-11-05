@@ -24,33 +24,28 @@ And then execute:
 
 ## Usage
 
-Then add a config file with your environment app names (the names you might pass to Heroku Toolbelt as an `--app` flag):
+Falcon is run from the command line. It takes two arguments, `appname` and `command`, and an optional `--force` (or `-f`) flag.
 
-> Note: Configuration is optional *if* you pass an explicit app name when you call falcon from the CL.
+The commands are: 
 
-```ruby
-# config/initializers/falcon.rb
+- `deploy` - Deploy code to your app.
+- `migrations` - Deploy code to your app, turn on maintenance mode, run accompanying migrations, and turn maintenance off.
+- `rollback` - Roll back the most recent deploy. This will *not* reverse migrations, so as the instructions stipulate, run `rake db:rollback` before this command as necessary.
 
-Falcon.configure do |c|
-  c.production_app = 'my-prod-app-name'
-  c.staging_app = 'my-staging-app-name' # Only if you have a staging app
-end
-```
+The optional `-f` flag disables the above rollback warning. 
 
-You're now free to run Falcon from the terminal like so:
+Some examples: 
 
 ```bash
-falcon deploy staging
+falcon staging-appname deploy
 # => Deploy code to your staging app
 
-falcon migrations production
+falcon my-prod-app migrations
 # => Deploy code to production app, turn on maintenance mode, run accompanying migrations, and turn maintenance off
 
-falcon deploy
-# => Defaults to production app
 
-falcon rollback -n an-explicitly-passed-app-name
-# => You can pass an explicit app name whether or not you've configured defaults
+falcon app-name rollback -f
+# => You will not be warned about migrations; falcon will go ahead and reverse the previous deploy
 
 falcon help
 # => ?

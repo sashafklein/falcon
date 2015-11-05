@@ -1,31 +1,18 @@
 #!/usr/bin/env ruby
 
 require "falcon"
-require 'optparse'
+require 'trollop'
 
 input = ARGV
 
-OptionParser.new do |opts|
-  opts.on("-n", "--name [NAME]", String, "Run command for Heroku app named [NAME]") do |v|
-    Falcon.configure{ |c| c.explicit_app = v }
-  end
-  opts.on("-f", "--force", "Skip warnings") do |v|
-    Falcon.configure{ |c| c.force = true }
-  end
-end.parse!
+opts = Trollop::options do
+  opt :force, "Ignore warnings", short: :f
+end
 
-if input.empty?
-  puts "Please give a command or type `falcon help` for more info."
-elsif input.length > 2
-  puts "No more than two commands (plus flags) accepted. Type `falcon help` for more info."
+appname, command = input[0], input[1]
+
+if input.length != 2 || !%w( deploy migrations rollback).include?( command )
+  puts Falcon::Deploy.help
 else
-
-  command, environment = input[0], input[1] || :production
-
-  if Falcon.configuration.explicit_app
-    raise "Too many arguments given -n flag. Type `falcon help` for more info." if input.length == 2
-    environment = :explicit
-  end
-
-  Falcon::Deploy.new( environment, Falcon.configuration.force ).run( command )
+  Falcon::Deploy.new( appname, opts[:force] ).run( command )
 end

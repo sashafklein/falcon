@@ -30,7 +30,7 @@ class HerokuDeployer
  
   def restart
     puts 'Restarting app servers ...'
-    Bundler.with_clean_env { run_and_log(`heroku restart --app #{@app}`) }
+    run_and_log(`heroku restart --app #{@app}`)
   end
  
   def tag
@@ -42,17 +42,17 @@ class HerokuDeployer
  
   def migrate
     puts 'Running database migrations ...'
-    Bundler.with_clean_env { run_and_log(`heroku run 'bundle exec rake db:migrate' --app #{@app}`) }
+    run_and_log(`heroku run 'bundle exec rake db:migrate' --app #{@app}`)
   end
  
   def turn_app_off
     puts 'Putting the app into maintenance mode ...'
-    Bundler.with_clean_env { run_and_log(`heroku maintenance:on --app #{@app}`) }
+    run_and_log(`heroku maintenance:on --app #{@app}`)
   end
  
   def turn_app_on
     puts 'Taking the app out of maintenance mode ...'
-    Bundler.with_clean_env { puts `heroku maintenance:off --app #{@app}` }
+    puts `heroku maintenance:off --app #{@app}`
   end
  
   def push_previous

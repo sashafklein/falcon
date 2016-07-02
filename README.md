@@ -2,7 +2,7 @@
 
 A simple wrapper to make it easier and less nerve-wracking to deploy to Heroku and roll code back when you mess things up. 
 
-![falcon](http://static3.businessinsider.com/image/547378e869bedd312b36685a/landing.gif)
+![falcon](https://dl.dropboxusercontent.com/content_link/MrtDWyQBTpveRRLwz7v64EnOU7Dvm2aBPrieU8QGSsdzzr2dHacImDWUrJDSCsuY/file)
 
 Inspired by Space X's awesome Falcon rocket, which is working towards the first combined take-off and safe landing, and drawn from [this gist](https://gist.github.com/guapolo/28729b95a7ef6b1aacf5).
 
